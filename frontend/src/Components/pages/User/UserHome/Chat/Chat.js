@@ -1,7 +1,11 @@
 import { Component, createRef } from 'react';
 import './Chat.scss';
 import Input from 'Components/shared/Input/Input';
-import { faPaperPlane, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+	faArrowsRotate,
+	faPaperPlane,
+	faUser,
+} from '@fortawesome/free-solid-svg-icons';
 import Button from 'Components/shared/Button/Button';
 import cookies from 'modules/cookies';
 import web from 'modules/web/web';
@@ -18,6 +22,7 @@ class Chat extends Component {
 		};
 
 		this.chatRef = createRef();
+		this.messagesRef = createRef();
 	}
 
 	async getMessages() {
@@ -91,6 +96,10 @@ class Chat extends Component {
 		let message = '';
 		let first = true;
 
+		this.setState({
+			needsScroll: true,
+		});
+
 		await web.streamChatCompletion({
 			messages: messages.map((message) => {
 				return {
@@ -117,6 +126,10 @@ class Chat extends Component {
 					first = false;
 				}
 			},
+		});
+
+		this.setState({
+			needsScroll: true,
 		});
 	}
 
@@ -150,6 +163,7 @@ class Chat extends Component {
 					sender: 'bot',
 				},
 			],
+			needsScroll: true,
 		});
 	}
 
@@ -182,12 +196,37 @@ class Chat extends Component {
 		);
 	}
 
+	redoMessage(index) {
+		const { messages } = this.state;
+
+		this.setState(
+			{
+				messages: messages.slice(0, index),
+				message: messages[index].content,
+			},
+			this.promptChatGPT
+		);
+	}
+
 	updateChatHeight() {
 		const chat = this.chatRef.current;
 		chat.style.height = window.innerHeight - chat.offsetTop + 'px';
 	}
 
+	scrollToBottom() {
+		// const { needsScroll } = this.state;
+		// const messages = this.messagesRef.current;
+		// if (!needsScroll || !messages) {
+		// 	return;
+		// }
+		// messages.scrollTop = messages.scrollHeight;
+		// this.setState({
+		// 	needsScroll: false,
+		// });
+	}
+
 	componentDidUpdate() {
+		this.scrollToBottom();
 		this.updateChatHeight();
 
 		const { problemMessage } = this.props;
@@ -221,13 +260,23 @@ class Chat extends Component {
 						{isBot ? '🧠' : <FontAwesomeIcon icon={faUser} />}
 					</div>
 					<div className='content'>{content}</div>
+					{isBot && index !== 0 && (
+						<FontAwesomeIcon
+							className='redo-icon'
+							onClick={this.redoMessage.bind(this, index)}
+							icon={faArrowsRotate}
+						/>
+					)}
+					{/* {index === messages.length - 1 && messages.length > 1 && (
+						<div className='newest-message-label'></div>
+					)} */}
 				</div>
 			);
 		});
 
 		return (
 			<div className='chat' ref={this.chatRef}>
-				<div className='messages'>
+				<div className='messages' ref={this.messagesRef}>
 					{messagesList}
 					<div
 						className={`typing-indicator message-right ${

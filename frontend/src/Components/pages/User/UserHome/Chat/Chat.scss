@@ -172,6 +172,41 @@
 			align-items: center;
 
 			width: 300px;
+
+			.redo-icon {
+				color: $text-medium;
+
+				cursor: pointer;
+
+				transition: $transition;
+			}
+
+			.redo-icon:hover {
+				color: $text;
+			}
+
+			.newest-message-label {
+				font-size: 11pt;
+
+				display: flex;
+
+				align-items: center;
+				text-align: center;
+
+				border-radius: 10px;
+
+				background: $danger;
+
+				position: absolute;
+
+				right: 0px;
+				top: 0px;
+
+				transform: translate(30%, -30%);
+
+				width: 17px;
+				height: 17px;
+			}
 		}
 
 		.message-right {

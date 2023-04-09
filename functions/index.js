@@ -3,7 +3,9 @@ const cors = require('cors');
 const express = require('express');
 const firebase = require('./modules/web/firebase');
 const openai = require('./modules/web/OpenAI/OpenAI');
+const google = require('./modules/web/Google/Google');
 const twilio = require('./modules/web/twilio');
+const { default: axios } = require('axios');
 const { MessagingResponse } = require('twilio').twiml;
 const app = express();
 app.use(cors({ origin: true, credentials: true }));
@@ -66,6 +68,70 @@ app.post('/delete-account', async (req, res) => {
 		}
 
 		return res.status(200).end();
+	} catch (err) {
+		console.error(err);
+
+		return res.status(500).json({
+			error: err.message,
+		});
+	}
+});
+
+app.post('/transcript-ibm', async (req, res) => {
+	const { audio } = req.body;
+
+	if (!audio) {
+		return res.status(400).json({
+			error: 'Audio is required',
+		});
+	}
+
+	const response = await axios.post(
+		'https://api.us-east.speech-to-text.watson.cloud.ibm.com/instances/8ba56df3-b3e3-47a3-8c18-ab68b57623c3/v1/recognize',
+		audio,
+		{
+			headers: {
+				'Content-Type': 'audio/mpeg',
+			},
+			auth: {
+				username: 'apikey',
+				password: process.env.IBM_API_KEY,
+			},
+		}
+	);
+
+	if (!response) {
+		return res.status(400).json({
+			error: 'Failed to transcribe audio',
+		});
+	}
+
+	return res.status(200).json({
+		transcript: response,
+	});
+});
+
+app.post('/transcript-google', async (req, res) => {
+	try {
+		const { audio } = req.body;
+
+		if (!audio) {
+			return res.status(400).json({
+				error: 'Audio is required',
+			});
+		}
+
+		const response = await google.transcriptGoogle(audio);
+
+		if (!response) {
+			return res.status(400).json({
+				error: 'Failed to transcribe audio',
+			});
+		}
+
+		return res.status(200).json({
+			transcript: response.data.transcript,
+		});
 	} catch (err) {
 		console.error(err);
 

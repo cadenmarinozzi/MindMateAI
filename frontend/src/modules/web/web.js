@@ -8,10 +8,61 @@ if (window.location.hostname === 'localhost') {
 		'https://us-central1-mindmate-ai.cloudfunctions.net/app';
 }
 
+function getBase64(file) {
+	return new Promise((resolve, reject) => {
+		var reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = function () {
+			resolve(reader.result);
+		};
+		reader.onerror = function (error) {};
+	});
+}
+
 async function transcriptWhisper({ audio }) {
 	try {
+		const base64 = await getBase64(audio);
+
 		const response = await axios.post('/transcript-whisper', {
+			audio: base64,
+		});
+
+		if (response.status !== 200) {
+			return;
+		}
+
+		return response.data;
+	} catch (err) {
+		console.error(err);
+
+		return false;
+	}
+}
+
+async function transcriptIBM({ audio }) {
+	try {
+		const response = await axios.post('/transcript-ibm', {
 			audio,
+		});
+
+		if (response.status !== 200) {
+			return;
+		}
+
+		return response.data;
+	} catch (err) {
+		console.error(err);
+
+		return false;
+	}
+}
+
+async function transcriptGoogle({ audio }) {
+	try {
+		const base64 = await getBase64(audio);
+
+		const response = await axios.post('/transcript-google', {
+			audio: base64,
 		});
 
 		if (response.status !== 200) {
@@ -167,4 +218,6 @@ export default {
 	deleteAccount,
 	transcriptWhisper,
 	editUserNickname,
+	transcriptGoogle,
+	transcriptIBM,
 };

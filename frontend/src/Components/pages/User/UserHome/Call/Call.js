@@ -31,12 +31,12 @@ class Call extends Component {
 		let audioChunks = [];
 		this.audioRecorder.onstop = async (e) => {
 			const blob = new Blob(audioChunks, {
-				type: 'audio/ogg',
+				type: 'audio/webm;codecs=opus',
 			});
 
 			const audioData = await utils.blobToBase64(blob);
 
-			const res = await web.transcriptWhisper({ audio: audioData });
+			const res = await web.transcriptIBM({ audio: audioData });
 			console.log(res);
 		};
 		this.audioRecorder.ondataavailable = (e) => {
@@ -87,17 +87,18 @@ class Call extends Component {
 		});
 
 		return (
-			<div className='call'>
-				<div className='calls'>{callsList}</div>
-				<div className='actions'>
-					<FontAwesomeIcon
-						icon={faMicrophone}
-						className={`record-button ${recording && 'fa-fade'}`}
-						onMouseDown={this.startRecording.bind(this)}
-						onMouseUp={this.stopRecording.bind(this)}
-					/>
-				</div>
-			</div>
+			// <div className='call'>
+			// 	<div className='calls'>{callsList}</div>
+			// 	<div className='actions'>
+			// 		<FontAwesomeIcon
+			// 			icon={faMicrophone}
+			// 			className={`record-button ${recording && 'fa-fade'}`}
+			// 			onMouseDown={this.startRecording.bind(this)}
+			// 			onMouseUp={this.stopRecording.bind(this)}
+			// 		/>
+			// 	</div>
+			// </div>
+			<div className='call-in-progess'>In progress. Come back later!</div>
 		);
 	}
 }

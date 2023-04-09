@@ -73,7 +73,7 @@ class UserHome extends Component {
 
 	handleProblemSelect(problem) {
 		this.setState({
-			problemMessage: 'I am having a problem with ' + problem,
+			problemMessage: `I am having a problem with ${problem}.`,
 		});
 	}
 
@@ -116,26 +116,24 @@ class UserHome extends Component {
 							</span>
 						</div>
 					</Gradient>
-					<div className='actions'>
-						<Gradient
-							gradients={gradients}
-							property='background'
-							duration={3000}
-							className={`action ${
-								activeAction === 'call' && 'action-active'
-							}`}
-							onClick={this.selectAction.bind(this, 'call')}
-							angle='0deg'>
-							<div className='details'>
-								<h4 className='title'>
-									<FontAwesomeIcon icon={faPhone} /> Call
-								</h4>
-								<span className='description'>
-									Talk to MindMateAI over a voice call!
-								</span>
-							</div>
-						</Gradient>
-					</div>
+					<Gradient
+						gradients={gradients}
+						property='background'
+						duration={3000}
+						className={`action ${
+							activeAction === 'call' && 'action-active'
+						}`}
+						onClick={this.selectAction.bind(this, 'call')}
+						angle='0deg'>
+						<div className='details'>
+							<h4 className='title'>
+								<FontAwesomeIcon icon={faPhone} /> Call
+							</h4>
+							<span className='description'>
+								Talk to MindMateAI over a voice call!
+							</span>
+						</div>
+					</Gradient>
 				</div>
 				<div className='divider'>
 					<div className='close-icon-container'>
@@ -149,7 +147,7 @@ class UserHome extends Component {
 					</div>
 					<div className='spacing-line' />
 				</div>
-				{!hideProblemSelector && (
+				{!hideProblemSelector && activeAction === 'chat' && (
 					<ProblemSelector
 						onSelect={this.handleProblemSelect.bind(this)}
 					/>

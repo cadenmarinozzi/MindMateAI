@@ -50,30 +50,12 @@ async function transcriptWhisper(audio) {
 	// 	},
 	// });
 
-	fs.writeFileSync('audio.ogg', audio);
+	// write audio to file
+	await fs.promises.writeFile('audio.m4a', audio);
 
-	ffmpeg.setFfmpegPath(ffmpegPath);
-	var outStream = fs.createWriteStream('./audio.mp3');
+	const file = fs.createReadStream('audio.m4a');
 
-	ffmpeg()
-		.input('./audio.ogg')
-		.audioQuality(96)
-		.toFormat('mp3')
-		.on('error', (error) => console.log(`Encoding Error: ${error.message}`))
-		.on('exit', () => console.log('Audio recorder exited'))
-		.on('close', () => console.log('Audio recorder closed'))
-		.on('end', () => console.log('Audio Transcoding succeeded !'))
-		.pipe(outStream, { end: true });
-
-	const file = fs.createReadStream('audio.mp3');
-
-	const audioReadStream = Readable.from(audioBuffer);
-	audioReadStream.path = 'audio.mp3';
-
-	const response = await openai.createTranscription(
-		audioReadStream,
-		'whisper-1'
-	);
+	const response = await openai.createTranscription(file, 'whisper-1');
 
 	// const response = await axios.post(
 	// 	'https://api.openai.com/v1/audio/transcriptions',
