@@ -1,0 +1,18 @@
+@use 'colors.scss' as *;
+@use 'vars.scss' as *;
+
+.information-security {
+	display: flex;
+	flex-direction: column;
+
+	gap: $spacing-large;
+
+	align-items: center;
+	justify-content: center;
+
+	margin: $spacing-large;
+
+	span {
+		max-width: 50%;
+	}
+}

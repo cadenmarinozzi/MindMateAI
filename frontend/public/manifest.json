@@ -1,0 +1,9 @@
+{
+	"short_name": "mindmate-ai",
+	"name": "MindMateAI",
+	"description": "Your personal AI therapist.",
+	"start_url": ".",
+	"display": "standalone",
+	"theme_color": "#000000",
+	"background_color": "#ffffff"
+}

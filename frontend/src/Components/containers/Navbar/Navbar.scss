@@ -1,0 +1,27 @@
+@use 'vars.scss' as *;
+
+.navbar {
+	display: flex;
+	flex-direction: row;
+
+	align-items: center;
+
+	justify-content: space-between;
+
+	gap: $spacing-medium;
+
+	padding: $spacing-large;
+
+	.section {
+		display: flex;
+		flex-direction: row;
+
+		gap: $spacing-medium;
+
+		align-items: center;
+
+		.logout-button {
+			cursor: pointer;
+		}
+	}
+}

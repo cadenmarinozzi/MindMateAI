@@ -1,0 +1,35 @@
+@use 'colors.scss' as *;
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+a {
+	text-decoration: none;
+	color: $text;
+}
+
+body {
+	font-size: 14pt;
+	background-color: $background;
+
+	font-family: sans-serif;
+	color: $text;
+}
+
+h1 {
+	font-size: 32pt;
+}
+
+h2 {
+	font-size: 26pt;
+}
+
+h3 {
+	font-size: 22pt;
+}
+
+h4 {
+	font-size: 20pt;
+}

@@ -1,0 +1,154 @@
+@use 'colors.scss' as *;
+@use 'vars.scss' as *;
+
+.input-container {
+	border-radius: 5px;
+	border: 1px solid $border;
+
+	width: 320px;
+	height: 50px;
+
+	position: relative;
+
+	display: flex;
+	flex-direction: row;
+
+	align-items: center;
+
+	transition: $transition;
+
+	.label {
+		position: absolute;
+
+		top: 0;
+
+		left: 10px;
+
+		transform: translate(0, -50%);
+
+		transition: $transition;
+
+		color: $text;
+
+		font-size: 12pt;
+		font-family: sans-serif;
+
+		.required {
+			color: $danger;
+		}
+
+		.line-container {
+			position: absolute;
+
+			width: 100%;
+			height: 100%;
+
+			z-index: -1;
+
+			transform: translateY(-50%);
+
+			.line {
+				background: $background;
+
+				height: 3px;
+				width: calc(100% + 8px);
+
+				transform: translate(-2px, -50%);
+
+				z-index: -1;
+			}
+		}
+
+		.input-required {
+			color: $primary;
+		}
+	}
+
+	.label-empty {
+		color: $text-medium;
+	}
+
+	.input {
+		padding-inline: 10px;
+
+		margin: 3px;
+
+		outline: 0;
+		border: 0;
+
+		width: 100%;
+		height: 100%;
+
+		background: transparent;
+
+		font-size: 12pt;
+
+		color: $text;
+	}
+
+	.input::placeholder {
+		color: $text-medium;
+	}
+
+	.password-meter {
+		padding-inline: 10px;
+
+		font-size: 12pt;
+		font-family: sans-serif;
+	}
+
+	.meter-weak {
+		color: $danger;
+	}
+
+	.meter-good {
+		color: $gold;
+	}
+
+	.meter-strong {
+		color: $success;
+	}
+}
+
+.input-error {
+	color: $danger;
+	border-color: $danger;
+
+	.label {
+		color: $danger;
+	}
+
+	.input::placeholder {
+		color: $danger;
+	}
+}
+
+.password-strength {
+	width: calc(100% - 2px * 2);
+
+	margin-top: -10px;
+
+	.password-strength-bar {
+		height: 6px;
+
+		border: 1px solid $border;
+		border-radius: 4px;
+
+		transition: $transition;
+	}
+
+	.password-weak {
+		background: $primary;
+		width: 33%;
+	}
+
+	.password-good {
+		background: $gold;
+		width: 66%;
+	}
+
+	.password-strong {
+		background: $success;
+		width: 100%;
+	}
+}

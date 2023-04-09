@@ -1,0 +1,107 @@
+@use 'colors.scss' as *;
+@use 'vars.scss' as *;
+
+.call {
+	display: flex;
+	flex-direction: column;
+
+	align-items: center;
+
+	justify-content: space-between;
+
+	margin-top: $spacing-large;
+
+	gap: $spacing-medium;
+
+	.calls {
+		.call {
+			display: flex;
+			flex-direction: row;
+
+			align-items: center;
+
+			gap: $spacing-medium;
+
+			width: 100px;
+
+			background: $primary;
+
+			border-radius: $border-radius-small;
+
+			padding: $spacing-medium;
+
+			.details {
+				width: 100px;
+
+				display: flex;
+				flex-direction: column;
+
+				gap: $spacing-small;
+
+				justify-content: center;
+
+				.bar {
+					background: $background;
+
+					height: 4px;
+					width: 100%;
+
+					border-radius: $border-radius-small;
+
+					.fill {
+						background: $border;
+
+						height: 100%;
+						width: 50%;
+					}
+				}
+
+				.controls {
+					display: flex;
+					flex-direction: row;
+
+					gap: $spacing-small;
+
+					align-items: center;
+
+					.playback-icon {
+						cursor: pointer;
+					}
+
+					.time {
+						font-size: 11pt;
+					}
+				}
+			}
+		}
+	}
+
+	.actions {
+		display: flex;
+		flex-direction: row;
+
+		gap: $spacing-medium;
+
+		align-items: center;
+		justify-content: center;
+
+		width: 100%;
+
+		margin-top: $spacing-large;
+
+		.record-button {
+			cursor: pointer;
+
+			background: $danger;
+
+			color: $background;
+
+			border-radius: 50%;
+
+			padding: $spacing-medium;
+
+			width: 25px;
+			height: 25px;
+		}
+	}
+}

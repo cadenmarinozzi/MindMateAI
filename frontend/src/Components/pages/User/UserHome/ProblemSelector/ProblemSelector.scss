@@ -1,0 +1,36 @@
+@use 'vars.scss' as *;
+@use 'colors.scss' as *;
+
+.problem-selector {
+	margin-top: $spacing-large;
+
+	display: flex;
+	flex-direction: column;
+
+	align-items: center;
+	justify-content: center;
+
+	gap: $spacing-medium;
+
+	transition: $transition;
+	transform-origin: top;
+
+	.problems {
+		display: flex;
+		flex-direction: row;
+
+		align-items: center;
+
+		gap: $spacing-medium;
+
+		.problem {
+			padding: $spacing-medium;
+
+			background: $primary;
+
+			border-radius: $border-radius-small;
+
+			cursor: pointer;
+		}
+	}
+}
