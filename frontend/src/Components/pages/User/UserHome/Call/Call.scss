@@ -13,6 +13,10 @@
 
 	gap: $spacing-medium;
 
+	.empty-calls-message {
+		color: $text-medium;
+	}
+
 	.calls {
 		overflow-y: scroll;
 

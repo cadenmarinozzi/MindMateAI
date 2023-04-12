@@ -6,6 +6,7 @@ import { faArrowRight, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './Home.scss';
+import Loader from 'Components/containers/Loader/Loader';
 
 const gradients = [
 	['#bd19d6', '#10a1ea'],
@@ -28,7 +29,7 @@ class Home extends Component {
 	}
 
 	render() {
-		const { loggedIn } = this.props;
+		const { loggedIn, loaded } = this.props;
 		const { messages, typing, botTyping } = this.state;
 
 		const messagesList = messages.map((message, index) => {
@@ -49,7 +50,7 @@ class Home extends Component {
 			);
 		});
 
-		return (
+		return loaded ? (
 			<div className='home'>
 				<div className='hero-content'>
 					<div className='header'>
@@ -104,6 +105,8 @@ class Home extends Component {
 					</div>
 				</div>
 			</div>
+		) : (
+			<Loader />
 		);
 	}
 }

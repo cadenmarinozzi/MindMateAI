@@ -61,7 +61,12 @@ class App extends Component {
 							<>
 								<Route
 									path='*'
-									element={<Home loggedIn={loggedIn} />}
+									element={
+										<Home
+											loggedIn={loggedIn}
+											loaded={loaded}
+										/>
+									}
 								/>
 								<Route
 									path='/user'

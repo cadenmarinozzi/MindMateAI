@@ -23,6 +23,8 @@ class Call extends Component {
 	}
 
 	updateCallsHeight() {
+		if (!this.callsRef.current) return;
+
 		const calls = this.callsRef.current;
 		calls.style.height = window.innerHeight - calls.offsetTop - 200 + 'px';
 	}
@@ -140,6 +142,10 @@ class Call extends Component {
 	}
 
 	componentDidMount() {
+		this.updateCallsHeight();
+	}
+
+	componentDidUpdate() {
 		this.updateCallsHeight();
 	}
 
@@ -299,6 +305,11 @@ class Call extends Component {
 
 		return (
 			<div className='call'>
+				{calls.length === 0 && (
+					<span className='empty-calls-message'>
+						Click on the microphone to start!
+					</span>
+				)}
 				<div className='calls' ref={this.callsRef}>
 					{callsList}
 					{

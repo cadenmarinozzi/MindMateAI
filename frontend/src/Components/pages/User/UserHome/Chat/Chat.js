@@ -10,13 +10,13 @@ import Button from 'Components/shared/Button/Button';
 import cookies from 'modules/cookies';
 import web from 'modules/web/web';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Loader from 'Components/containers/Loader/Loader';
 
 class Chat extends Component {
 	constructor() {
 		super();
 
 		this.state = {
-			messages: [],
 			message: '',
 			botTyping: true,
 		};
@@ -209,6 +209,10 @@ class Chat extends Component {
 	}
 
 	updateChatHeight() {
+		if (!this.chatRef.current) {
+			return;
+		}
+
 		const chat = this.chatRef.current;
 		chat.style.height = window.innerHeight - chat.offsetTop + 'px';
 	}
@@ -246,7 +250,7 @@ class Chat extends Component {
 	render() {
 		const { messages, message, typing, botTyping } = this.state;
 
-		const messagesList = messages.map((message, index) => {
+		const messagesList = messages?.map((message, index) => {
 			const { content, sender } = message;
 			const isBot = sender === 'bot';
 
@@ -274,7 +278,7 @@ class Chat extends Component {
 			);
 		});
 
-		return (
+		return messages ? (
 			<div className='chat' ref={this.chatRef}>
 				<div className='messages' ref={this.messagesRef}>
 					{messagesList}
@@ -312,6 +316,8 @@ class Chat extends Component {
 					/>
 				</div>
 			</div>
+		) : (
+			<Loader />
 		);
 	}
 }

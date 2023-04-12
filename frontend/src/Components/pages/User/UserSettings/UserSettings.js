@@ -1,11 +1,16 @@
 import { Component } from 'react';
 import Button from 'Components/shared/Button/Button';
-import { faUserEdit, faUserSlash } from '@fortawesome/free-solid-svg-icons';
+import {
+	faSpinner,
+	faUserEdit,
+	faUserSlash,
+} from '@fortawesome/free-solid-svg-icons';
 import cookies from 'modules/cookies';
 import web from 'modules/web/web';
 import './UserSettings.scss';
 import { Link } from 'react-router-dom';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Loader from 'Components/containers/Loader';
 class UserSettings extends Component {
 	constructor() {
 		super();
@@ -43,14 +48,15 @@ class UserSettings extends Component {
 	render() {
 		const { user } = this.state;
 
-		return (
+		return user ? (
 			<div className='user-settings'>
 				<div className='header'>
 					<h3>User Settings</h3>
 				</div>
 				<div className='section'>
 					<h4>Account</h4>
-					{user && <span>Nickname: {user.nickname}</span>}
+					<span>Nickname: {user.nickname}</span>
+					<span>Email: {user.email}</span>
 					<Link to='/user-edit'>
 						<Button label='Edit Account' icon={faUserEdit} />
 					</Link>
@@ -65,6 +71,8 @@ class UserSettings extends Component {
 					<h4>Chat Settings</h4>
 				</div>
 			</div>
+		) : (
+			<Loader />
 		);
 	}
 }
