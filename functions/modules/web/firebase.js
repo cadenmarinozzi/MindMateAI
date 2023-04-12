@@ -31,8 +31,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 
-const usersCollection = collection(firestore, 'users');
-
 async function editUserNickname({ email, password, nickname }) {
 	try {
 		const userCredential = await signInWithEmailAndPassword(

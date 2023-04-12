@@ -1,9 +1,6 @@
 const { Configuration, OpenAIApi } = require('openai');
 const fs = require('fs');
-
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-const ffmpeg = require('fluent-ffmpeg');
-const { default: axios } = require('axios');
+const { v4: uuid } = require('uuid');
 
 const configuration = new Configuration({
 	apiKey: process.env.OPENAI_API_KEY,
@@ -15,7 +12,7 @@ function createSystemMessages(messages) {
 	let newMessages = [
 		{
 			content:
-				'You are an AI therapy chatbot named MindMate. You are helpful, friendly, and nonjudgmental. You are a good listener. You are a good friend. You are a good therapist. Do NOT respond with large messages with big lists, instead, try and respond with short, concise messages that are easy to undestand.',
+				'You are an AI therapy chatbot named MindMate. You are helpful, friendly, and nonjudgmental. You are a good listener. You are a good friend. You are a good therapist. Do NOT respond with large messages with big lists, instead, try and respond with short, concise messages that are easy to undestand. Also, ask questions to guide the person.',
 			role: 'system',
 		},
 	];
@@ -37,39 +34,23 @@ async function createChatCompletion(messages, model = 'gpt-4') {
 }
 
 async function transcriptWhisper(audio) {
-	// const response = await axios({
-	// 	method: 'POST',
-	// 	url: 'https://api.openai.com/v1/audio/transcriptions',
-	// 	headers: {
-	// 		'Content-Type': 'multipart/form-data',
-	// 		Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-	// 	},
-	// 	data: {
-	// 		file: audio,
-	// 		model: 'whisper-1',
-	// 	},
-	// });
+	if (!fs.existsSync('./temp')) {
+		await fs.promises.mkdir('./temp');
+	}
 
-	// write audio to file
-	await fs.promises.writeFile('audio.m4a', audio);
+	const filePath = `./temp/audio-${uuid()}.webm`;
 
-	const file = fs.createReadStream('audio.m4a');
+	await fs.promises.writeFile(
+		filePath,
+		audio.replace('data:audio/webm;codecs=opus;base64,', ''),
+		'base64'
+	);
 
+	const file = fs.createReadStream(filePath);
 	const response = await openai.createTranscription(file, 'whisper-1');
 
-	// const response = await axios.post(
-	// 	'https://api.openai.com/v1/audio/transcriptions',
-	// 	{
-	// 		file,
-	// 		model: 'whisper-1',
-	// 	},
-	// 	{
-	// 		headers: {
-	// 			'Content-Type': 'multipart/form-data',
-	// 			Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-	// 		},
-	// 	}
-	// );
+	// delete the temp file
+	fs.promises.unlink(filePath);
 
 	return response.data.text;
 }

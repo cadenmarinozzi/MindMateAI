@@ -18,4 +18,22 @@ function blobToBase64(blob) {
 	});
 }
 
-export default { calculatePasswordStrength, blobToBase64 };
+async function getAudioDuration(audioURL) {
+	return new Promise((resolve) => {
+		const audio = document.createElement('audio');
+		audio.muted = true;
+
+		const source = document.createElement('source');
+
+		source.src = audioURL;
+		audio.preload = 'metadata';
+
+		audio.appendChild(source);
+
+		audio.addEventListener('loadedmetadata', () => {
+			resolve(audio.duration);
+		});
+	});
+}
+
+export default { calculatePasswordStrength, blobToBase64, getAudioDuration };
